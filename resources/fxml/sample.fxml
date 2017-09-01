@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #0099ff;" stylesheets="/css/style.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="micki.Controller.Controller">
+   <left>
+      <VBox fx:id="leftBox" prefHeight="297.0" prefWidth="208.0" styleClass="board" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="numberOfTimes" prefHeight="27.0" prefWidth="496.0" styleClass="avg" text="number of times: 10">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="curTime" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="496.0" styleClass="avg" text="current time: 0.00">
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
+            </Label>
+            <Label fx:id="bestTime" prefHeight="22.0" prefWidth="315.0" styleClass="avg" text="best time: 0.00">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="worstTime" prefHeight="32.0" prefWidth="305.0" styleClass="avg" text="worst time: 0.00">
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
+            </Label>
+            <Label fx:id="curAvg5" prefHeight="22.0" prefWidth="362.0" styleClass="avg" text="current avg5: 9.32">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="bestAvg5" prefHeight="32.0" prefWidth="255.0" styleClass="avg" text="best avg5: 9.78">
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
+            </Label>
+            <Label fx:id="curAvg12" prefHeight="22.0" prefWidth="294.0" styleClass="avg" text="current avg12: DNF">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="bestAvg12" prefHeight="32.0" prefWidth="251.0" styleClass="avg" text="best avg12: DNF">
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
+            </Label>
+            <Label fx:id="curAvg100" prefHeight="22.0" prefWidth="240.0" styleClass="avg" text="current avg100: 3.67">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="bestAvg100" prefHeight="32.0" prefWidth="237.0" styleClass="avg" text="best avg100: DNF">
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
+            </Label>
+            <Label fx:id="curAvg1000" prefHeight="22.0" prefWidth="251.0" styleClass="avg" text="current avg1000: DNF">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="bestAvg1000" prefHeight="32.0" prefWidth="237.0" styleClass="avg" text="best avg1000: DNF">
+               <padding>
+                  <Insets bottom="15.0" />
+               </padding>
+            </Label>
+            <Label fx:id="sessionAvg" layoutX="10.0" layoutY="302.0" prefHeight="32.0" prefWidth="237.0" styleClass="avg" text="session avg: 10.28" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin></VBox>
+   </left>
+   <right>
+      <VBox fx:id="rightBox" alignment="TOP_CENTER" prefHeight="286.0" prefWidth="208.0" styleClass="board" BorderPane.alignment="CENTER">
+         <children>
+            <Hyperlink fx:id="resetSessionButton" alignment="CENTER" onAction="#resetSession" prefHeight="25.0" prefWidth="306.0" text="RESET" textFill="#548cff">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Hyperlink>
+            <Label fx:id="timesLabel" alignment="TOP_LEFT" prefHeight="263.0" prefWidth="251.0" wrapText="true" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
+   <center>
+      <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="308.0" prefWidth="432.0" text="0.00" textAlignment="CENTER" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Verdana" size="30.0" />
+         </font>
+      </Label>
+   </center>
+   <bottom>
+      <HBox fx:id="bottomBox" prefHeight="53.0" prefWidth="600.0" styleClass="board" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="ollTextField" prefHeight="53.0" prefWidth="285.0" promptText="OLL'S TO USE (seperate with /) eg. 13/25" />
+            <Hyperlink fx:id="solutionButton" alignment="CENTER" onAction="#getSolution" prefHeight="53.0" prefWidth="179.0" text="Solution" textFill="#548cff">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Hyperlink>
+            <Label fx:id="solutionLabel" prefHeight="53.0" prefWidth="471.0" text="R U R' U R U2 R' F' D B2 F2 U R U R' U'">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+   </bottom>
+   <top>
+      <HBox fx:id="topBox" alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="600.0" styleClass="board" BorderPane.alignment="CENTER">
+         <Label fx:id="curScrambleLabel" prefHeight="41.0" prefWidth="670.0" styleClass="text" text="R U R' U R U2 R' F' D B2 F2 U R U R' U'" textAlignment="CENTER">
+            <font>
+               <Font name="Arial Black" size="19.0" />
+            </font>
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </Label>
+         <Hyperlink fx:id="nextScrambleButton" alignment="CENTER_RIGHT" onAction="#getNextScramble" prefHeight="50.0" prefWidth="56.0" text="NEXT" textFill="#548cff">
+            <font>
+               <Font name="System Bold" size="15.0" />
+            </font>
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </Hyperlink>
+      </HBox>
+   </top>
+</BorderPane>

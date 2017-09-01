@@ -1,0 +1,30 @@
+button
+{
+    -fx-background: none;
+    -fx-text: visible;
+}
+
+Label
+{
+    -fx-font-family: "Verdana";
+}
+
+.scramble
+{
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 19px;
+}
+
+.avg
+{
+    -fx-font-size: 12px;
+}
+
+HBox, VBox
+{
+    -fx-background-color: "#99CC33";
+    -fx-border-radius: 100px;
+}
+
+
+
