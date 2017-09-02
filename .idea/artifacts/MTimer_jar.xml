@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MTimer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MTimer_jar</output-path>
+    <root id="archive" name="MTimer.jar">
+      <element id="module-output" name="MTimer" />
+      <element id="extracted-dir" path="D:/Cubing/twophase.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
