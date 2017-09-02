@@ -1,0 +1,27 @@
+
+
+Version:	3.10
+CmdLine:	C:\Users\Micky\IdeaProjects\MTimer\MTimer.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Micky\IdeaProjects\MTimer\.
+Java min ver:	1.4.0
+Java max ver:	
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8
+Check launcher:	C:\Program Files\Java\jre1.8.0_144\bin\javaw.exe (OK)
+Match:		1.8
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_144
+Check launcher:	C:\Program Files\Java\jre1.8.0_144\bin\javaw.exe (OK)
+Match:		1.8.0_144
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8
+Ignore:		1.8
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_131
+Ignore:		1.8.0_131
+64-bit search:	SOFTWARE\JavaSoft\JRE...
+64-bit search:	SOFTWARE\JavaSoft\JDK...
+Runtime used:	1.8.0_144 (64-bit)
+Launcher:	C:\Program Files\Java\jre1.8.0_144\bin\javaw.exe
+Launcher args:	-jar "C:\Users\Micky\IdeaProjects\MTimer\MTimer.exe"
+Args length:	52/32768 chars
+Exit code:	0
