@@ -120,11 +120,7 @@ public class Controller{
         String[] allTimesInLabel = timesLabel.getText().split(",");
 
         setScramble();
-        updateAvgs(allTimesInLabel);
-        timerLabel.setText("0.00");
-        timesLabel.setText("");
-        curTime.setText("current time: DNF");
-        numberOfTimes.setText("number of times: DNF");
+        updateTimes("DNF");
     }
 
     public void updateEverything(float curTime)
@@ -145,7 +141,8 @@ public class Controller{
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             String[] ollA = ollTextField.getText().split("/"); //splitting the OLL algs in textfield
             oll = Integer.parseInt(ollA[random.nextInt(ollA.length)]); //getting a random one of the selected oll's and parse it to int
         }
@@ -154,11 +151,10 @@ public class Controller{
             oll = random.nextInt(57);
         }
 
-        oll=0;
         if(oll == 0) selectedOll = 57-oll-1;
         else selectedOll = 57-oll;
 
-        pll = 0;//random.nextInt(21);
+        pll = random.nextInt(21);
 
         while(oll >= 2)
         {
@@ -315,7 +311,7 @@ public class Controller{
 
         if(allTimes.length >= 5)
         {
-            avg = calculateAvg(allTimes.length-1, allTimes);
+            avg = calculateAvg(allTimes.length, allTimes);
 
             sessionAvg.setText("session avg: " + avg);
         }
@@ -384,18 +380,44 @@ public class Controller{
     private void updateTimes(float curTime)
     {
         String formattedTime = String.format(Locale.US,"%.2f", curTime);
+        timesLabel.setText(allTimes += formattedTime + ", ");
+
         String timesLabelNoSpace = timesLabel.getText().replaceAll("\\s", ""); // removing spaces
-        String[] allTimesInLabel = timesLabelNoSpace.split(",");
+        String[] allTimesInLabel = timesLabelNoSpace.split(",+");
 
         updateBestTimes(Float.parseFloat(formattedTime));
         updateAvgs(allTimesInLabel);
         setScramble();
 
         timerLabel.setText(formattedTime);
-        timesLabel.setText(allTimes += formattedTime + ", ");
         numberOfTimes.setText("number of times: " + String.valueOf(allTimesInLabel.length+1));
 
         timerTracker = 0.00f;
+    }
+
+    private void updateTimes(String time)
+    {
+        numberOfTimes.setText("number of times: " + time);
+        curTime.setText("current time: " + time);
+        bestTime.setText("best time: " + time);
+        worstTime.setText("worst time: " + time);
+        bestTimeTracker = 999999999;
+        worstTimeTracker = 0;
+        curAvg5.setText("current avg5: " + time);
+        bestAvg5.setText("best avg5: " + time);
+        curAvg12.setText("current avg12: " + time);
+        bestAvg12.setText("best avg12: " + time);
+        curAvg100.setText("current avg100: " + time);
+        bestAvg100.setText("best avg100: " + time);
+        curAvg1000.setText("current avg1000: " + time);
+        bestAvg1000.setText("best avg1000: " + time);
+        sessionAvg.setText("session avg: " + time);
+        timesLabel.setText("");
+        timerLabel.setText("0.00");
+
+        allTimes = "";
+        timing = false;
+
     }
 
     public BorderPane getBorderPane() {
