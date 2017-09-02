@@ -19,9 +19,7 @@ import micki.AlgScrambler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Controller{
 
@@ -57,6 +55,7 @@ public class Controller{
     private float timerTracker;
 
     private boolean timing = false;
+    private boolean resetClickedOnce = false;
 
     private String[] auf = {"U' ", "U ", "U2 "};
     private String allTimes = "";
@@ -75,9 +74,18 @@ public class Controller{
 
         });
         this.scene.setOnKeyReleased(event -> {
-            if(event.getCode() == KeyCode.SPACE)
+
+            switch(event.getCode())
             {
-                timerRunning(timing);
+                case SPACE:
+                     timerRunning(timing);
+                    break;
+                case A:
+                    reset();
+                    break;
+                case N:
+                    setScramble();
+                    break;
             }
         });
     }
@@ -92,15 +100,7 @@ public class Controller{
 
     public void resetSession(ActionEvent actionEvent)
     {
-        if(resetSessionButton.getText() == "reset")
-        {
-            resetSessionButton.setText("sure?");
-        }
-        else {
-            updateEverything();
-            timesLabel.setText("");
-        }
-        borderPane.requestFocus();
+        reset();
     }
 
     public void getSolution(ActionEvent actionEvent)
@@ -112,6 +112,22 @@ public class Controller{
     public void getNextScramble(ActionEvent actionEvent)
     {
         setScramble();
+        borderPane.requestFocus();
+    }
+
+    public void reset()
+    {
+        if(!resetClickedOnce)
+        {
+            resetSessionButton.setText("SURE?");
+            resetClickedOnce = true;
+        }
+        else {
+            resetSessionButton.setText("RESET");
+            updateEverything();
+            timesLabel.setText("");
+            resetClickedOnce = false;
+        }
         borderPane.requestFocus();
     }
 
@@ -229,6 +245,8 @@ public class Controller{
     private void timerStopped(float curTime)
     {
         timerLabel.setTextFill(Paint.valueOf("#ffffff"));
+        resetClickedOnce = false;
+        resetSessionButton.setText("RESET");
         updateEverything(curTime);
         setVisibility(true);
     }
@@ -309,7 +327,7 @@ public class Controller{
             bestAvg12.setText("best avg12: DNF");
         }
 
-        if(allTimes.length >= 5)
+        if(allTimes.length >= 3)
         {
             avg = calculateAvg(allTimes.length, allTimes);
 
@@ -390,7 +408,7 @@ public class Controller{
         setScramble();
 
         timerLabel.setText(formattedTime);
-        numberOfTimes.setText("number of times: " + String.valueOf(allTimesInLabel.length+1));
+        numberOfTimes.setText("number of times: " + String.valueOf(allTimesInLabel.length));
 
         timerTracker = 0.00f;
     }
