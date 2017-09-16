@@ -52,14 +52,20 @@ public class Controller{
     @FXML private HBox bottomBox;
 
     private float bestTimeTracker = 999999999;
+    private float lastBestTime = 999999999;
     private float worstTimeTracker = 0;
+    private float lastWorstTime = 0;
     private float timerTracker;
+
+    private int[] ollsIKnow = {29, 30, 35, 37, 55, 56};
 
     private boolean timing = false;
     private boolean resetClickedOnce = false;
 
     private String[] auf = {"U' ", "U ", "U2 "};
     private String allTimes = "";
+    private String curScramble = "";
+    private String lastScamble = "";
 
     private AlgScrambler algScrambler;
     private File file;
@@ -86,6 +92,9 @@ public class Controller{
                     break;
                 case N:
                     setScramble();
+                    break;
+                case Q:
+                    deleteLastTime();
                     break;
             }
         });
@@ -116,6 +125,14 @@ public class Controller{
         borderPane.requestFocus();
     }
 
+    public void getLastScramble(ActionEvent actionEvent)
+    {
+        curScramble = lastScamble;
+
+        curScrambleLabel.setText(lastScamble);
+        borderPane.requestFocus();
+    }
+
     public void reset()
     {
         if(!resetClickedOnce)
@@ -132,6 +149,30 @@ public class Controller{
         borderPane.requestFocus();
     }
 
+    public void deleteLastTime()
+    {
+        String[] tAllTimes = splitTimes();
+        String updatedTimeLabel = "";
+
+        for(int i = 0; i < tAllTimes.length-1; i++)
+        {
+            if(i == tAllTimes.length-2) //third to last time
+            {
+                worstTimeTracker = lastWorstTime;
+                bestTimeTracker = lastBestTime;
+
+                timesLabel.setText(allTimes = updatedTimeLabel);
+                updateEverything(Float.parseFloat(tAllTimes[i]));
+                return;
+            }
+            else
+            {
+                updatedTimeLabel += tAllTimes[i] + ", ";
+            }
+        }
+
+    }
+
     public void updateEverything()
     {
         String[] allTimesInLabel = timesLabel.getText().split(",");
@@ -143,7 +184,6 @@ public class Controller{
     public void updateEverything(float curTime)
     {
         updateTimes(curTime);
-        setScramble();
     }
 
     private void setScramble()
@@ -152,20 +192,35 @@ public class Controller{
         int oll;
         int pll;
 
+        lastScamble = curScramble;
+
         try {
             in = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
+        String[] ollA = ollTextField.getText().split("/"); //splitting the OLL algs in textfield
+        String randomOll = ollA[random.nextInt(ollA.length)].toLowerCase();
+
         try
         {
-            String[] ollA = ollTextField.getText().split("/"); //splitting the OLL algs in textfield
-            oll = Integer.parseInt(ollA[random.nextInt(ollA.length)]); //getting a random one of the selected oll's and parse it to int
+            oll = Integer.parseInt(randomOll); //getting a random one of the selected oll's and parse it to int
         }
         catch (NumberFormatException e)
         {
-            oll = random.nextInt(57);
+            switch(randomOll)
+            {
+                case "1lll":
+                    oll = ollsIKnow[random.nextInt(ollsIKnow.length)];
+                    break;
+                case "zbll":
+                    oll = random.nextInt(7) + 21;
+                    break;
+                default:
+                    oll = random.nextInt(57);
+                    break;
+            }
         }
 
         if(oll == 0) selectedOll = 57-oll-1;
@@ -185,11 +240,13 @@ public class Controller{
             in.nextLine();
         }
         String pllAlg = auf[random.nextInt(3)] + in.nextLine().split(":")[1];
-        System.out.println(pllAlg);
-        curScrambleLabel.setText(AlgScrambler.obfusticate(pllAlg + ollAlg));
+        String scramble = AlgScrambler.obfusticate(pllAlg + ollAlg);
+        curScrambleLabel.setText(scramble);
 
         in.close();
 
+        curScramble = scramble;
+        System.out.println(lastScamble);
         setSolution(false);
     }
 
@@ -248,6 +305,10 @@ public class Controller{
         timerLabel.setTextFill(Paint.valueOf("#ffffff"));
         resetClickedOnce = false;
         resetSessionButton.setText("RESET");
+
+        lastWorstTime = worstTimeTracker;
+        lastBestTime = bestTimeTracker;
+
         updateEverything(curTime);
         setVisibility(true);
     }
@@ -387,13 +448,13 @@ public class Controller{
         if(recentTime <= bestTimeTracker)
         {
             bestTimeTracker = recentTime;
-            bestTime.setText("best time: " + bestTimeTracker);
         }
         if(recentTime >= worstTimeTracker)
         {
             worstTimeTracker = recentTime;
-            worstTime.setText("worst time: " + worstTimeTracker);
         }
+        bestTime.setText("best time: " + bestTimeTracker);
+        worstTime.setText("worst time: " + worstTimeTracker);
     }
 
     private void updateTimes(float curTime)
@@ -401,8 +462,7 @@ public class Controller{
         String formattedTime = String.format(Locale.US,"%.2f", curTime);
         timesLabel.setText(allTimes += formattedTime + ", ");
 
-        String timesLabelNoSpace = timesLabel.getText().replaceAll("\\s", ""); // removing spaces
-        String[] allTimesInLabel = timesLabelNoSpace.split(",+");
+        String[] allTimesInLabel = splitTimes();
 
         updateBestTimes(Float.parseFloat(formattedTime));
         updateAvgs(allTimesInLabel);
@@ -412,6 +472,12 @@ public class Controller{
         numberOfTimes.setText("number of times: " + String.valueOf(allTimesInLabel.length));
 
         timerTracker = 0.00f;
+    }
+
+    private String[] splitTimes()
+    {
+        String timesLabelNoSpace = timesLabel.getText().replaceAll("\\s", ""); // removing spaces
+        return timesLabelNoSpace.split(",");
     }
 
     private void updateTimes(String time)

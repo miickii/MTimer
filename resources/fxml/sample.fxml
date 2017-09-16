@@ -136,6 +136,11 @@
                <Insets />
             </HBox.margin>
          </Hyperlink>
+         <Hyperlink fx:id="lastScrambleButton" alignment="CENTER_RIGHT" layoutX="754.0" layoutY="10.0" onAction="#getLastScramble" prefHeight="50.0" prefWidth="56.0" text="LAST" textFill="#548cff">
+            <font>
+               <Font name="System Bold" size="15.0" />
+            </font>
+         </Hyperlink>
       </HBox>
    </top>
 </BorderPane>
