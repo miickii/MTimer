@@ -57,12 +57,12 @@ public class Controller{
     private float lastWorstTime = 0;
     private float timerTracker;
 
-    private int[] ollsIKnow = {29, 30, 35, 37, 55, 56};
+    private int[] ollsIKnow = {9, 29, 30, 35, 37, 55, 56};
 
     private boolean timing = false;
     private boolean resetClickedOnce = false;
 
-    private String[] auf = {"U' ", "U ", "U2 "};
+    private String[] auf = {"", "U' ", "U ", "U2 "};
     private String allTimes = "";
     private String curScramble = "";
     private String lastScamble = "";
@@ -73,6 +73,10 @@ public class Controller{
     private Random random;
     private Timeline time;
     Scene scene;
+
+    private Map<String, Integer> pllChecker;
+
+    //todo: avg of 50 instead of 1000
 
     public void initializeScene(Scene scene)
     {
@@ -96,6 +100,9 @@ public class Controller{
                 case Q:
                     deleteLastTime();
                     break;
+                case P:
+                    lastScrambleMethod();
+                    break;
             }
         });
     }
@@ -105,6 +112,7 @@ public class Controller{
         algScrambler = new AlgScrambler();
         file = new File("allAlgs.txt");
         random = new Random();
+        pllChecker = new HashMap<>();
 
     }
 
@@ -123,9 +131,28 @@ public class Controller{
     {
         setScramble();
         borderPane.requestFocus();
+        /*int num = 1000;
+        while(num > 1)
+        {
+            setScramble();
+            borderPane.requestFocus();
+            num--;
+            System.out.println(num);
+        }
+        int num2 = 1;
+        for(String pll : pllChecker.keySet())
+        {
+            System.out.println(pll + "   " + num2 + ": " + pllChecker.get(pll));
+            num2++;
+        }*/
     }
 
     public void getLastScramble(ActionEvent actionEvent)
+    {
+        lastScrambleMethod();
+    }
+
+    public void lastScrambleMethod()
     {
         curScramble = lastScamble;
 
@@ -186,6 +213,21 @@ public class Controller{
         updateTimes(curTime);
     }
 
+    private String randomAuf(int type)
+    {
+        switch(type)
+        {
+            case 0:
+                return auf[random.nextInt(4)];
+            case 1:
+                return auf[random.nextInt(2)];
+            case 2:
+                return "";
+            default:
+                return "not a pll";
+        }
+    }
+
     private void setScramble()
     {
         int selectedOll;
@@ -200,7 +242,7 @@ public class Controller{
             e.printStackTrace();
         }
 
-        String[] ollA = ollTextField.getText().split("/"); //splitting the OLL algs in textfield
+        String[] ollA = ollTextField.getText().replaceAll(" ", "").split("/"); //splitting the OLL algs in textfield
         String randomOll = ollA[random.nextInt(ollA.length)].toLowerCase();
 
         try
@@ -218,12 +260,70 @@ public class Controller{
                     oll = random.nextInt(7) + 21;
                     break;
                 default:
-                    oll = random.nextInt(57);
+                    oll = random.nextInt(57)+1;
                     break;
             }
         }
 
-        if(oll == 0) selectedOll = 57-oll-1;
+        pll = random.nextInt(21)+1;
+
+        String ollAlg = "";
+        String pllAlg = "";
+
+        while(oll > 0)
+        {
+            oll--;
+            ollAlg = in.nextLine().split(":")[1];
+        }
+        in.close();
+
+        try {
+            in = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        char curAlgName = ' '; //we use it to check for pll's and if they are symmetrical
+        while(pll > 0)
+        {
+            String[] arr = in.nextLine().split(":");
+
+            curAlgName = arr[0].toLowerCase().toCharArray()[0];
+            if(curAlgName >= 97 && curAlgName <=122)
+            {
+                pll--;
+                pllAlg = arr[1];
+            }
+        }
+        if(curAlgName == 'z' || curAlgName == 'e')
+        {
+            ollAlg = randomAuf(1) + ollAlg;
+        }
+        else if(curAlgName == 'h' || curAlgName == 'n')
+        {
+            ollAlg = randomAuf(2) + ollAlg;
+        }
+        else
+        {
+            ollAlg = randomAuf(0) + ollAlg;
+        }
+        pllAlg = randomAuf(0) + pllAlg;
+
+        String fullScramble = pllAlg + ollAlg + randomAuf(0);
+        /*if(pllChecker.containsKey(fullScramble))
+        {
+            pllChecker.put(fullScramble, pllChecker.get(fullScramble)+1); //THIS IS TO CHECK IF EVERY PLL GETS SCRAMBLED
+        }
+        else
+        {
+            pllChecker.put(fullScramble, 1);
+        }*/
+        String scramble = AlgScrambler.obfusticate(fullScramble);
+        curScrambleLabel.setText(scramble);
+
+        in.close();
+
+        /*if(oll == 0) selectedOll = 57-oll-1;
         else selectedOll = 57-oll;
 
         pll = random.nextInt(21);
@@ -243,10 +343,9 @@ public class Controller{
         String scramble = AlgScrambler.obfusticate(pllAlg + ollAlg);
         curScrambleLabel.setText(scramble);
 
-        in.close();
+        in.close();*/
 
         curScramble = scramble;
-        System.out.println(lastScamble);
         setSolution(false);
     }
 
